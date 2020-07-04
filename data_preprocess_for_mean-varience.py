@@ -42,6 +42,7 @@ instruments.drop(index=instruments.loc[instruments['operate_mode']!='开放式�
 instruments = instruments.loc[pd.isnull(instruments['delist_date'])] #不买中止发行的
 instruments.drop(index=instruments.loc[instruments['list_date']>STANDPOINT-datetime.timedelta(days=365)].index, inplace=True) #不买发行不到一年的
 instruments.drop(index=instruments.loc[instruments['revenue']>2].index, inplace=True) # 不买收益率高于2的狗屎运
+instruments.drop(index=instruments.loc[instruments['volatility']==0].index, inplace=True) # 波动率为0的认为是净值数据缺失
 
 # 做一个简单的基金挑选
 high_revenue = set(instruments.groupby(['underlying_asset_type']).apply(lambda x:x.sort_values('revenue', ascending=False).head(5))['code']) #每一类基金收益高的
